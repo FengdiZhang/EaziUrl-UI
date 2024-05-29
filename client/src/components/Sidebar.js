@@ -17,19 +17,19 @@ const Sidebar = () => {
           <p>Home</p>
         </NavigationLink>
 
-        <NavigationLink to="/">
+        <NavigationLink to="/links">
           <Icon>
             <GoLink />
           </Icon>
           <p>Link</p>
         </NavigationLink>
-        <NavigationLink to="/">
+        <NavigationLink to="/analytics">
           <Icon>
             <GoGraph />
           </Icon>
           <p>Analytics</p>
         </NavigationLink>
-        <NavigationLink to="/">
+        <NavigationLink to="/profile">
           <Icon>
             <GoPerson />
           </Icon>
@@ -75,7 +75,6 @@ const Icon = styled.div`
   transition: color 0.3s;
 `;
 const NavigationLink = styled(NavLink)`
-  /* border: 2px solid red; */
   text-decoration: none;
   color: #333;
   margin: 10px 10px 10px 0;
@@ -87,6 +86,20 @@ const NavigationLink = styled(NavLink)`
   transition:
     background-color 0.3s,
     color 0.3s;
+
+  &.active {
+    background-color: #688ca1;
+    color: white;
+    /* border-left: 2px solid #2a4547; */
+
+    & > ${Icon} {
+      color: white;
+    }
+
+    & > p {
+      color: white;
+    }
+  }
 
   &:hover {
     background-color: #e6f7ff;
