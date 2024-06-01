@@ -63,7 +63,7 @@ const Container = styled.div`
   transition: transform 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px); /* 鼠标悬停时向上移动 */
+    transform: translateY(-5px);
   }
 `;
 
@@ -78,7 +78,7 @@ const Avatar = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid #007bff; /* 增加边框 */
+  border: 2px solid #007bff;
 `;
 
 const Title = styled.h1`

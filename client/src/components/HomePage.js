@@ -57,7 +57,7 @@ const HomePage = () => {
 };
 
 const Wrapper = styled.div`
-  background-repeat: no-repeat; /* 防止背景图片重复 */
+  background-repeat: no-repeat;
   padding: 20px;
   margin: 0 0 0 145px;
   height: 100vh;

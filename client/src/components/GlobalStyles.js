@@ -6,8 +6,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     background-image: url('/photos/container.jpg');
-  background-size: cover;
-  background-position: center;
+    background-size: cover;
+    background-position: center;
     
   }
 
