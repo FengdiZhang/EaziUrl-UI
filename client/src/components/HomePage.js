@@ -40,7 +40,7 @@ const HomePage = () => {
           </InnerContainer1>
           <InnerContainer2>
             <IconWrapper>
-              <FaLink size={60} color="#007bff" />
+              <FaLink size={50} color="#688ca1" />
             </IconWrapper>
             <ContentWrapper>
               <Title2>Create Your New Link</Title2>
@@ -82,7 +82,7 @@ const Container3 = styled.div`
 `;
 
 const InnerContainer1 = styled.div`
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   padding: 20px;
   width: 45%;
@@ -136,7 +136,7 @@ const StyledParagraph = styled.p`
 
 const NavigationLink = styled(NavLink)`
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #688ca1;
   color: #fff;
   border: none;
   border-radius: 4px;

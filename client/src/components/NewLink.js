@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const NewLink = () => {
   return (
@@ -11,8 +12,7 @@ const NewLink = () => {
           Title <span>(optional)</span>
         </p>
         <Input1></Input1> <br />
-        <Button>Submit</Button>
-        <ShortUrl>Generated short URL will appear here</ShortUrl>
+        <NavigationLink to="/generatedlink">Submit</NavigationLink>
       </InnerContainer>
     </Wrapper>
   );
@@ -63,28 +63,19 @@ const Input1 = styled.input`
   font-size: 16px;
 `;
 
-const Button = styled.button`
-  width: 20%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: #007bff;
+const NavigationLink = styled(NavLink)`
+  padding: 10px 20px;
+  background-color: #688ca1;
   color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 16px;
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
     background-color: #0056b3;
   }
-`;
-
-const ShortUrl = styled.div`
-  margin-top: 20px;
-  font-size: 16px;
-  color: #007bff;
-  text-align: center;
-  word-break: break-all;
 `;
 
 export default NewLink;
