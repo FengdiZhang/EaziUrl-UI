@@ -1,17 +1,19 @@
+import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const GeneratedLink = () => {
+  const location = useLocation();
+  const { shortUrl } = location.state || { shortUrl: '' };
+
   return (
     <Wrapper>
       <Container>
-        <Avatar src="/photos/logo2.png" alt="avatar" />
+        <Avatar src="/static/build/photos/logo2.png" alt="avatar" />
         <Text>
-          <Title>Title</Title>
-          <ShortLink>eaziurl.com/kLk9jf</ShortLink>
-          <LongLink>
-            https://react-icons.github.io/react-icons/icons/fa/
-          </LongLink>
+          <Title>Generated Short Link</Title>
+          <ShortLink>this is your shortened url: {shortUrl}</ShortLink>
+          <LongLink>Your original URL has been shortened.</LongLink>
         </Text>
       </Container>
     </Wrapper>

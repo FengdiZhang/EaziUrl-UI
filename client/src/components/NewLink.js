@@ -1,18 +1,52 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const NewLink = () => {
+  const [longUrl, setLongUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [shortUrl, setShortUrl] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('/api/encode', { url: longUrl });
+      setShortUrl(response.data.short_url);
+      navigate('/generatedlink', {
+        state: { shortUrl: response.data.short_url },
+      });
+    } catch (error) {
+      console.error('There was an error encoding the URL!', error);
+    }
+  };
+
   return (
     <Wrapper>
       <InnerContainer>
         <Title2>Create your new Link</Title2>
-        <p>Destination</p>
-        <Input1 placeholder="http://example.com/my-destination-url"></Input1>
-        <p>
-          Title <span>(optional)</span>
-        </p>
-        <Input1></Input1> <br />
-        <NavigationLink to="/generatedlink">Submit</NavigationLink>
+        <form onSubmit={handleSubmit}>
+          <p>Destination</p>
+          <Input1
+            placeholder="http://example.com/my-destination-url"
+            value={longUrl}
+            onChange={(e) => setLongUrl(e.target.value)}
+          />
+          <p>
+            Title <span>(optional)</span>
+          </p>
+          <Input1 value={title} onChange={(e) => setTitle(e.target.value)} />
+          <br />
+          <NavigationLink as="button" type="submit">
+            Submit
+          </NavigationLink>
+        </form>
+        {shortUrl && (
+          <div>
+            <p>Short URL: {shortUrl}</p>
+          </div>
+        )}
       </InnerContainer>
     </Wrapper>
   );
