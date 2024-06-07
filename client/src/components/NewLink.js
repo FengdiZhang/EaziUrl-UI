@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const NewLink = () => {
   const [longUrl, setLongUrl] = useState('');
   const [title, setTitle] = useState('');
-  const [shortUrl, setShortUrl] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -18,7 +18,8 @@ const NewLink = () => {
       });
       navigate('/generatedlink', {
         state: {
-          shortUrl: response.data.short_url,
+          shortUrl: response.data.display_url,
+          realUrl: response.data.real_url,
           title: title,
           longUrl: longUrl,
         },
