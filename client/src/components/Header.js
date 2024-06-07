@@ -36,7 +36,7 @@ const Text = styled.p`
 const Container1 = styled.div`
   margin: 10px 0;
   /* background-color: #ebfcff; */
-  background-color: #f4f6fa;
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 16px;
   border-radius: 10px;
 `;

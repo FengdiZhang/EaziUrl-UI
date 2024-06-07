@@ -7,6 +7,8 @@ import HomePage from './HomePage';
 import Analytics from './Analytic';
 import Links from './Links';
 import Profile from './Profile';
+import NewLink from './NewLink';
+import GeneratedLink from './GeneratedLink';
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
           <Route path="/analytics" element={<Analytics />}></Route>
           <Route path="/links" element={<Links />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/newlink" element={<NewLink />}></Route>
+          <Route path="/generatedlink" element={<GeneratedLink />}></Route>
         </Routes>
       </BrowserRouter>
     </>

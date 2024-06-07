@@ -1,15 +1,13 @@
 import styled from 'styled-components';
-import { FaLink, FaUsers, FaRegSmile } from 'react-icons/fa';
+import { FaLink } from 'react-icons/fa';
 import GlobalStyle from './GlobalStyles';
+import { NavLink } from 'react-router-dom';
 
 const HomePage = () => {
   return (
     <>
       <GlobalStyle />
       <Wrapper>
-        {/* <Container1>
-        <Title>✨ Get custom links and a complimentary domain.</Title>
-      </Container1> */}
         <Container2>
           <SectionTitle>How to Use EaziUrl</SectionTitle>
           <Paragraph>
@@ -41,14 +39,16 @@ const HomePage = () => {
             </Paragraph>
           </InnerContainer1>
           <InnerContainer2>
-            <Title2>Create your new Link</Title2>
-            <p>Destination</p>
-            <Input1 placeholder="http://example.com/my-destination-url"></Input1>
-            <p>
-              Title <span>(optional)</span>
-            </p>
-            <Input1></Input1> <br />
-            <Button>Submit</Button>
+            <IconWrapper>
+              <FaLink size={50} color="#688ca1" />
+            </IconWrapper>
+            <ContentWrapper>
+              <Title2>Create Your New Link</Title2>
+              <StyledParagraph>
+                Click the button below to create your custom shortened link.
+              </StyledParagraph>
+              <NavigationLink to="/newlink">Get Started</NavigationLink>
+            </ContentWrapper>
           </InnerContainer2>
         </Container3>
       </Wrapper>
@@ -67,12 +67,6 @@ const Wrapper = styled.div`
   font-family: 'Nunito';
 `;
 
-// const Container1 = styled.div`
-//   background-color: rgba(255, 255, 255, 0.8);
-//   border-radius: 10px;
-//   padding: 20px;
-// `;
-
 const Container2 = styled.div`
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
@@ -88,7 +82,7 @@ const Container3 = styled.div`
 `;
 
 const InnerContainer1 = styled.div`
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   padding: 20px;
   width: 45%;
@@ -105,42 +99,49 @@ const Paragraph = styled.p`
 `;
 
 const InnerContainer2 = styled.div`
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  padding: 20px;
+  padding: 30px;
   width: 45%;
-  & p {
-    font-weight: bold;
-    & span {
-      color: grey;
-    }
-  }
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+`;
+
+const IconWrapper = styled.div`
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Title2 = styled.h1`
-  text-align: center;
   margin-bottom: 20px;
   color: #333;
 `;
 
-const Input1 = styled.input`
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+const StyledParagraph = styled.p`
+  margin-bottom: 20px;
+  color: #555;
 `;
 
-const Button = styled.button`
-  width: 95%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: #007bff;
+const NavigationLink = styled(NavLink)`
+  padding: 10px 20px;
+  background-color: #688ca1;
   color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 16px;
+  text-decoration: none;
   cursor: pointer;
 
   &:hover {
