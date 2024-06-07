@@ -4,16 +4,20 @@ import { useLocation } from 'react-router-dom';
 
 const GeneratedLink = () => {
   const location = useLocation();
-  const { shortUrl } = location.state || { shortUrl: '' };
+  const { shortUrl, title, longUrl } = location.state || {
+    shortUrl: '',
+    title: '',
+    longUrl: '',
+  };
 
   return (
     <Wrapper>
       <Container>
-        <Avatar src="/static/build/photos/logo2.png" alt="avatar" />
+        <Avatar src="/photos/logo2.png" alt="Avatar" />
         <Text>
-          <Title>Generated Short Link</Title>
-          <ShortLink>this is your shortened url: {shortUrl}</ShortLink>
-          <LongLink>Your original URL has been shortened.</LongLink>
+          <Title>{title}</Title>
+          <ShortLink>{shortUrl}</ShortLink>
+          <LongLink>{longUrl}</LongLink>
         </Text>
       </Container>
     </Wrapper>
@@ -53,7 +57,7 @@ const Avatar = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid #007bff;
+  /* border: 2px solid #007bff; */
 `;
 
 const Title = styled.h1`

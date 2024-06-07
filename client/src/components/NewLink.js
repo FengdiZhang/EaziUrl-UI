@@ -12,10 +12,16 @@ const NewLink = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/api/encode', { url: longUrl });
-      setShortUrl(response.data.short_url);
+      const response = await axios.post('/api/encode', {
+        url: longUrl,
+        title: title,
+      });
       navigate('/generatedlink', {
-        state: { shortUrl: response.data.short_url },
+        state: {
+          shortUrl: response.data.short_url,
+          title: title,
+          longUrl: longUrl,
+        },
       });
     } catch (error) {
       console.error('There was an error encoding the URL!', error);
@@ -42,11 +48,6 @@ const NewLink = () => {
             Submit
           </NavigationLink>
         </form>
-        {shortUrl && (
-          <div>
-            <p>Short URL: {shortUrl}</p>
-          </div>
-        )}
       </InnerContainer>
     </Wrapper>
   );
@@ -89,7 +90,7 @@ const Title2 = styled.h1`
 `;
 
 const Input1 = styled.input`
-  width: 100%;
+  width: 500px;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;
