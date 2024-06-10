@@ -4,7 +4,8 @@ import { useLocation } from 'react-router-dom';
 
 const GeneratedLink = () => {
   const location = useLocation();
-  const { shortUrl, title, longUrl } = location.state || {
+  const { realUrl, shortUrl, title, longUrl } = location.state || {
+    realUrl: '',
     shortUrl: '',
     title: '',
     longUrl: '',
@@ -16,8 +17,12 @@ const GeneratedLink = () => {
         <Avatar src="/photos/logo2.png" alt="Avatar" />
         <Text>
           <Title>{title}</Title>
-          <ShortLink>{shortUrl}</ShortLink>
-          <LongLink>{longUrl}</LongLink>
+          <ShortLink href={realUrl} target="_blank" rel="noopener noreferrer">
+            {shortUrl}
+          </ShortLink>
+          <LongLink href={longUrl} target="_blank" rel="noopener noreferrer">
+            {longUrl}
+          </LongLink>
         </Text>
       </Container>
     </Wrapper>
@@ -66,15 +71,26 @@ const Title = styled.h1`
   margin-bottom: 5px;
 `;
 
-const ShortLink = styled.p`
+const ShortLink = styled.a`
+  text-decoration: none;
   font-size: 18px;
   color: #007bff;
   margin-bottom: 5px;
+
+  &:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
 `;
 
-const LongLink = styled.span`
+const LongLink = styled.a`
+  text-decoration: none;
   font-size: 14px;
   color: #666;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export default GeneratedLink;
