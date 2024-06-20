@@ -1,39 +1,48 @@
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from '../axiosConfig';
 
 const Links = () => {
+  const [links, setLinks] = useState([]);
+
+  useEffect(() => {
+    const fetchLinks = async () => {
+      try {
+        const response = await axios.get('/api/links');
+        setLinks(response.data);
+        // console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching links', error);
+      }
+    };
+    fetchLinks();
+  }, []);
+
   return (
     <Wrapper>
       <Header>Links</Header>
-      <Container>
-        <Avatar src="/photos/logo2.png" alt="avatar" />
-        <Text>
-          <Title>Title</Title>
-          <ShortLink>eaziurl.com/kLk9jf</ShortLink>
-          <LongLink>
-            https://react-icons.github.io/react-icons/icons/fa/
-          </LongLink>
-        </Text>
-      </Container>
-      <Container>
-        <Avatar src="/photos/logo2.png" alt="avatar" />
-        <Text>
-          <Title>Title</Title>
-          <ShortLink>eaziurl.com/kLk9jf</ShortLink>
-          <LongLink>
-            https://react-icons.github.io/react-icons/icons/fa/
-          </LongLink>
-        </Text>
-      </Container>
-      <Container>
-        <Avatar src="/photos/logo2.png" alt="avatar" />
-        <Text>
-          <Title>Title</Title>
-          <ShortLink>eaziurl.com/kLk9jf</ShortLink>
-          <LongLink>
-            https://react-icons.github.io/react-icons/icons/fa/
-          </LongLink>
-        </Text>
-      </Container>
+      {links.map((link) => (
+        <Container key={link.short_url}>
+          <Avatar src="/photos/logo2.png" alt="avatar" />
+          <Text>
+            <Title>{link.title || 'No Title'}</Title>
+            <ShortLink
+              href={link.long_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {`eaziurl.fz/${link.short_url}`}
+            </ShortLink>
+            <LongLink
+              href={link.long_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.long_url}
+            </LongLink>
+          </Text>
+        </Container>
+      ))}
     </Wrapper>
   );
 };
@@ -78,7 +87,7 @@ const Avatar = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid #007bff;
+  /* border: 2px solid #007bff; */
 `;
 
 const Title = styled.h1`
@@ -87,15 +96,26 @@ const Title = styled.h1`
   margin-bottom: 5px;
 `;
 
-const ShortLink = styled.p`
+const ShortLink = styled.a`
+  text-decoration: none;
   font-size: 18px;
   color: #007bff;
   margin-bottom: 5px;
+
+  &:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
 `;
 
-const LongLink = styled.span`
+const LongLink = styled.a`
+  text-decoration: none;
   font-size: 14px;
   color: #666;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export default Links;
