@@ -103,3 +103,4 @@ const LongLink = styled.a`
 `;
 
 export default GeneratedLink;
+
