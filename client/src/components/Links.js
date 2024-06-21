@@ -31,7 +31,7 @@ const Links = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {`eaziurl.fz/${link.short_url}`}
+              {`127.0.0.1:8000/api/${link.short_url}`}
             </ShortLink>
             <LongLink
               href={link.long_url}

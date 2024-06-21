@@ -4,11 +4,17 @@ import { useLocation } from 'react-router-dom';
 
 const GeneratedLink = () => {
   const location = useLocation();
-  const { realUrl, shortUrl, title, longUrl } = location.state || {
+  const { realUrl, title, longUrl } = location.state || {
     realUrl: '',
-    shortUrl: '',
     title: '',
     longUrl: '',
+  };
+
+  const handleRedirect = (e) => {
+    e.preventDefault();
+    if (realUrl) {
+      window.open(realUrl, '_blank'); // redirect
+    }
   };
 
   return (
@@ -17,9 +23,7 @@ const GeneratedLink = () => {
         <Avatar src="/photos/logo2.png" alt="Avatar" />
         <Text>
           <Title>{title}</Title>
-          <ShortLink href={realUrl} target="_blank" rel="noopener noreferrer">
-            {shortUrl}
-          </ShortLink>
+          <ShortLink onClick={handleRedirect}>{realUrl}</ShortLink>
           <LongLink href={longUrl} target="_blank" rel="noopener noreferrer">
             {longUrl}
           </LongLink>
@@ -62,7 +66,6 @@ const Avatar = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  /* border: 2px solid #007bff; */
 `;
 
 const Title = styled.h1`
@@ -71,11 +74,16 @@ const Title = styled.h1`
   margin-bottom: 5px;
 `;
 
-const ShortLink = styled.a`
-  text-decoration: none;
-  font-size: 18px;
+const ShortLink = styled.button`
+  background: none;
+  border: none;
   color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 18px;
   margin-bottom: 5px;
+  text-align: left;
 
   &:hover {
     color: #0056b3;
@@ -87,6 +95,7 @@ const LongLink = styled.a`
   text-decoration: none;
   font-size: 14px;
   color: #666;
+  text-align: left;
 
   &:hover {
     text-decoration: underline;
