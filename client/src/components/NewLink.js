@@ -18,7 +18,7 @@ const NewLink = () => {
       });
       navigate('/generatedlink', {
         state: {
-          shortUrl: response.data.display_url,
+          // shortUrl: response.data.display_url,
           realUrl: response.data.real_url,
           title: title,
           longUrl: longUrl,
@@ -115,3 +115,4 @@ const NavigationLink = styled(NavLink)`
 `;
 
 export default NewLink;
+

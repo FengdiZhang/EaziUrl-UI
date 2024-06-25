@@ -1,15 +1,27 @@
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
-const Links = () => {
+const Profile = () => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   return (
     <Wrapper>
       <h1>Profile</h1>
 
-      <Container>this is my container2</Container>
+      <Container>
+        hi
+        <Username>{currentUser.username}</Username>
+      </Container>
     </Wrapper>
   );
 };
 const Avatar = styled.img``;
+const Username = styled.span`
+  margin-left: 8px;
+  font-weight: bold;
+  color: #333;
+`;
 const Wrapper = styled.div`
   padding: 0 0 0 20px;
   margin: 0 0 0 140px;
@@ -26,4 +38,4 @@ const Container = styled.div`
   padding: 10px;
 `;
 
-export default Links;
+export default Profile;
