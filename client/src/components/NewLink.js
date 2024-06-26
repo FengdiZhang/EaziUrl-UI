@@ -1,26 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import axios from '../axiosConfig';
 import { useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 const NewLink = () => {
+  const { currentUser } = useContext(UserContext);
   const [longUrl, setLongUrl] = useState('');
   const [title, setTitle] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (longUrl) {
+      const fetchTitle = async () => {
+        try {
+          const response = await axios.post('/api/fetch_title', {
+            url: longUrl,
+          });
+          setTitle(response.data.title);
+        } catch (error) {
+          console.error('Error fetching title', error);
+          setTitle('');
+        }
+      };
+
+      fetchTitle();
+    }
+  }, [longUrl]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/api/encode', {
-        url: longUrl,
-        title: title,
-      });
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        '/api/encode',
+        {
+          url: longUrl,
+          title: title || 'No title',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       navigate('/generatedlink', {
         state: {
-          // shortUrl: response.data.display_url,
           realUrl: response.data.real_url,
-          title: title,
+          title: title || 'No title',
           longUrl: longUrl,
         },
       });
@@ -29,90 +56,112 @@ const NewLink = () => {
     }
   };
 
+  if (!currentUser) {
+    return (
+      <Wrapper>
+        <Message>You need to be logged in to create a link.</Message>
+        <Button onClick={() => navigate('/login')}>Login</Button>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
-      <InnerContainer>
-        <Title2>Create your new Link</Title2>
-        <form onSubmit={handleSubmit}>
-          <p>Destination</p>
-          <Input1
-            placeholder="http://example.com/my-destination-url"
-            value={longUrl}
-            onChange={(e) => setLongUrl(e.target.value)}
-          />
-          <p>
-            Title <span>(optional)</span>
-          </p>
-          <Input1 value={title} onChange={(e) => setTitle(e.target.value)} />
-          <br />
-          <NavigationLink as="button" type="submit">
-            Submit
-          </NavigationLink>
-        </form>
-      </InnerContainer>
+      <FormContainer>
+        <Title>Create a New Link</Title>
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label>Long URL:</Label>
+            <Input
+              type="text"
+              value={longUrl}
+              onChange={(e) => setLongUrl(e.target.value)}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Title:</Label>
+            <Input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder=""
+            />
+          </FormGroup>
+          <Button type="submit">Create Link</Button>
+        </Form>
+      </FormContainer>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-  margin: 0;
-  height: 100vh;
-  font-family: 'Nunito';
-`;
-
-const InnerContainer = styled.div`
-  background-color: #f4f6fa;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  & p {
-    font-weight: bold;
-    width: 100%;
-    & span {
-      color: grey;
-    }
-  }
+  justify-content: center;
+  height: 100vh;
 `;
 
-const Title2 = styled.h1`
+const FormContainer = styled.div`
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 320px;
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-  width: 100%;
 `;
 
-const Input1 = styled.input`
-  width: 500px;
+const Title = styled.h2`
+  margin-bottom: 10px;
+  color: #007bff;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 15px;
+  text-align: left;
+`;
+
+const Label = styled.label`
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+`;
+
+const Input = styled.input`
   padding: 10px;
-  margin: 10px 0;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
-const NavigationLink = styled(NavLink)`
-  padding: 10px 20px;
-  background-color: #688ca1;
-  color: #fff;
+const Button = styled.button`
+  padding: 10px;
+  font-size: 16px;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
-  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
+  margin-top: 10px;
 
   &:hover {
     background-color: #0056b3;
   }
 `;
 
-export default NewLink;
+const Message = styled.p`
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+`;
 
+export default NewLink;
