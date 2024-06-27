@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserProvider } from '../context/UserContext';
 import GlobalStyle from './GlobalStyles';
@@ -13,6 +12,7 @@ import GeneratedLink from './GeneratedLink';
 import Login from './Login';
 import Register from './Register';
 import Dashboard from './Dashboard';
+import OAuthCallback from './OAuthCallback';
 
 const App = () => {
   return (
@@ -31,6 +31,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/auth/callback" element={<OAuthCallback />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

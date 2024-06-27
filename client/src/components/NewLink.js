@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from '../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
-
+import Login from './Login';
 const NewLink = () => {
   const { currentUser } = useContext(UserContext);
   const [longUrl, setLongUrl] = useState('');
@@ -57,12 +57,7 @@ const NewLink = () => {
   };
 
   if (!currentUser) {
-    return (
-      <Wrapper>
-        <Message>You need to be logged in to create a link.</Message>
-        <Button onClick={() => navigate('/login')}>Login</Button>
-      </Wrapper>
-    );
+    return <Login />;
   }
 
   return (
@@ -71,7 +66,7 @@ const NewLink = () => {
         <Title>Create a New Link</Title>
         <Form onSubmit={handleSubmit}>
           <FormGroup>
-            <Label>Long URL:</Label>
+            <Label>Destination:</Label>
             <Input
               type="text"
               value={longUrl}
@@ -100,6 +95,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
+  font-family: 'Nunito';
 `;
 
 const FormContainer = styled.div`
@@ -107,13 +103,13 @@ const FormContainer = styled.div`
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 320px;
+  width: 500px;
   text-align: center;
 `;
 
 const Title = styled.h2`
   margin-bottom: 10px;
-  color: #007bff;
+  color: #a4d4da;
 `;
 
 const Form = styled.form`
@@ -140,6 +136,13 @@ const Input = styled.input`
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+
+  &:focus {
+    color: black;
+    border-color: #a4d4da;
+    outline: none;
+    box-shadow: 0 0 5px #a4d4da;
+  }
 `;
 
 const Button = styled.button`
@@ -147,21 +150,14 @@ const Button = styled.button`
   font-size: 16px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #a4d4da;
   color: #fff;
   cursor: pointer;
   margin-top: 10px;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #a4d4da;
   }
-`;
-
-const Message = styled.p`
-  font-size: 18px;
-  color: #666;
-  text-align: center;
-  margin-top: 20px;
 `;
 
 export default NewLink;

@@ -1,26 +1,91 @@
+import React, { useState } from 'react';
 import axios from '../axiosConfig';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import React, { useState } from 'react';
 
 const Register = () => {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
+
+  const validateUsername = (username) => {
+    if (username.length < 3 || username.length > 20) {
+      return 'Username must be between 3 and 20 characters';
+    }
+    return '';
+  };
+
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      return 'Invalid email address';
+    }
+    return '';
+  };
+
+  const validatePassword = (password) => {
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordPattern.test(password)) {
+      return 'Password must be at least 8 characters long and contain both letters and numbers';
+    }
+    return '';
+  };
+
+  const handleUsernameChange = (e) => {
+    const newUsername = e.target.value;
+    setUsername(newUsername);
+    setUsernameError(validateUsername(newUsername));
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    setEmailError(validateEmail(newEmail));
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setPasswordError(validatePassword(newPassword));
+  };
 
   const handleRegister = async (event) => {
     event.preventDefault();
+
+    const usernameValidationError = validateUsername(username);
+    const emailValidationError = validateEmail(email);
+    const passwordValidationError = validatePassword(password);
+
+    if (
+      usernameValidationError ||
+      emailValidationError ||
+      passwordValidationError
+    ) {
+      setUsernameError(usernameValidationError);
+      setEmailError(emailValidationError);
+      setPasswordError(passwordValidationError);
+      return;
+    }
+
     try {
       await axios.post('/auth/register', {
         username,
-        password,
         email,
+        password,
       });
       navigate('/login');
     } catch (error) {
-      console.error('Error registering', error);
+      if (error.response && error.response.data.detail) {
+        setError(error.response.data.detail);
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     }
   };
 
@@ -32,30 +97,37 @@ const Register = () => {
           Already have an account?{' '}
           <StyledNavLink to="/login">Log in</StyledNavLink>
         </Subtitle>
+        {error && <Error>{error}</Error>}
         <Form onSubmit={handleRegister}>
-          <FormGroup>
-            <Label>Email:</Label>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormGroup>
           <FormGroup>
             <Label>Username:</Label>
             <Input
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleUsernameChange}
+              required
             />
+            {usernameError && <Error>{usernameError}</Error>}
+          </FormGroup>
+          <FormGroup>
+            <Label>Email:</Label>
+            <Input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+            {emailError && <Error>{emailError}</Error>}
           </FormGroup>
           <FormGroup>
             <Label>Password:</Label>
             <Input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
+              required
             />
+            {passwordError && <Error>{passwordError}</Error>}
           </FormGroup>
           <Button type="submit">Register</Button>
         </Form>
@@ -66,22 +138,11 @@ const Register = () => {
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 100vh;
-`;
-const Subtitle = styled.p`
-  margin-bottom: 20px;
-  color: #666;
-`;
-
-const StyledNavLink = styled(NavLink)`
-  color: #007bff;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  font-family: 'Nunito';
 `;
 
 const FormContainer = styled.div`
@@ -92,10 +153,21 @@ const FormContainer = styled.div`
   width: 320px;
   text-align: center;
 `;
-
+const StyledNavLink = styled(NavLink)`
+  color: #a4d4da;
+  text-decoration: none;
+  font-weight: bold;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+const Subtitle = styled.p`
+  margin-bottom: 20px;
+  color: #666;
+`;
 const Title = styled.h2`
   margin-bottom: 10px;
-  color: #007bff;
+  color: #a4d4da;
 `;
 
 const Form = styled.form`
@@ -122,6 +194,13 @@ const Input = styled.input`
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
+
+  &:focus {
+    color: black;
+    border-color: #a4d4da;
+    outline: none;
+    box-shadow: 0 0 5px #a4d4da;
+  }
 `;
 
 const Button = styled.button`
@@ -129,14 +208,19 @@ const Button = styled.button`
   font-size: 16px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #a4d4da;
   color: #fff;
   cursor: pointer;
   margin-top: 10px;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #a4d4da;
   }
+`;
+
+const Error = styled.p`
+  color: red;
+  margin-bottom: 15px;
 `;
 
 export default Register;
