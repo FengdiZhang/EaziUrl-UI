@@ -4,7 +4,7 @@
 
 # EaziURL 💻
 
-<img src="/client/public/photos/md.jpg" alt="EaziURL"/>
+<img src="/client/public/photos/main.jpg" alt="EaziURL"/>
 
 Welcome to EaziURL, a user-friendly URL shortening service.
 
