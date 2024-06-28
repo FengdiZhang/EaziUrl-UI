@@ -1,20 +1,43 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserContext } from '../context/UserContext';
 
 const Dashboard = () => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (!user || !token) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const handleGoHome = () => {
     navigate('/');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    setCurrentUser(null);
+    navigate('/login');
+  };
+
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Wrapper>
       <Content>
-        <Title>Welcome</Title>
+        <Title>{currentUser.username}</Title>
         <WelcomeText>Welcome to EaziUrl!</WelcomeText>
         <Button onClick={handleGoHome}>Try it now!</Button>
+        <Button onClick={handleLogout}>Logout</Button>
       </Content>
     </Wrapper>
   );
@@ -52,12 +75,13 @@ const Button = styled.button`
   font-size: 16px;
   border: none;
   border-radius: 4px;
-  background-color: #6a11cb;
+  background-color: #a4d4da;
   color: #fff;
   cursor: pointer;
+  margin: 10px;
 
   &:hover {
-    background-color: #2575fc;
+    background-color: #435541;
   }
 `;
 

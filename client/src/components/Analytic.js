@@ -4,7 +4,7 @@ import { FaLink, FaUsers, FaRegSmile } from 'react-icons/fa';
 const Analytics = () => {
   return (
     <Wrapper>
-      <Container2>
+      <Container>
         <SectionTitle>Statistics</SectionTitle>
         <Stats>
           <StatItem>
@@ -29,23 +29,31 @@ const Analytics = () => {
             <StatLabel>User Satisfaction</StatLabel>
           </StatItem>
         </Stats>
-      </Container2>
+      </Container>
+      <ChartContainer>
+        <ChartSection>
+          <ChartImage src="/photos/chart1.jpg" alt="Daily Activity Chart" />
+        </ChartSection>
+        <ChartSection>
+          <ChartImage src="/photos/chart2.jpg" alt="User Growth Chart" />
+        </ChartSection>
+      </ChartContainer>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  padding: 0 0 0 20px;
+  padding: 0 20px;
   margin: 0 0 0 140px;
   height: 100vh;
   font-family: 'Nunito';
 `;
 
-const Container2 = styled.div`
-  /* border: 2px solid #e1e3e1; */
+const Container = styled.div`
   background-color: #f4f6fa;
   border-radius: 10px;
   padding: 20px;
+  margin-bottom: 20px;
 `;
 
 const SectionTitle = styled.h2`
@@ -77,6 +85,24 @@ const StatNumber = styled.div`
 
 const StatLabel = styled.div`
   color: #666;
+`;
+
+const ChartContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  background-color: #f4f6fa;
+`;
+
+const ChartSection = styled.div`
+  border-radius: 10px;
+  padding: 20px;
+  width: 45%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const ChartImage = styled.img`
+  width: 100%;
+  border-radius: 10px;
 `;
 
 export default Analytics;

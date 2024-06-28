@@ -1,18 +1,51 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { FaUserCircle } from 'react-icons/fa';
+import axios from '../axiosConfig';
 
 const Header = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  useEffect(() => {
+    const checkTokenExpiration = async () => {
+      const token = localStorage.getItem('token');
+      const refreshToken = localStorage.getItem('refresh_token');
+
+      if (token) {
+        try {
+          const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+          const tokenExpiry = tokenPayload.exp * 1000;
+          if (Date.now() > tokenExpiry - 5 * 60 * 1000) {
+            try {
+              const response = await axios.post('/refresh', {
+                refresh_token: refreshToken,
+              });
+              localStorage.setItem('token', response.data.access_token);
+            } catch (error) {
+              console.error('Error refreshing access token', error);
+              handleLogout();
+            }
+          }
+        } catch (error) {
+          console.error('Invalid token', error);
+          handleLogout();
+        }
+      }
+    };
+
+    checkTokenExpiration();
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
     localStorage.removeItem('currentUser');
     setCurrentUser(null);
     setDropdownOpen(false);
+    window.location.href = '/login';
   };
 
   return (

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -31,6 +32,10 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://127.0.0.1:8000/auth/login';
+  };
+
   return (
     <Wrapper>
       <FormContainer>
@@ -56,8 +61,19 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormGroup>
-          <Button type="submit">Login</Button>
+          <ButtonContainer>
+            <Button type="submit">Login</Button>
+          </ButtonContainer>
         </Form>
+        <Separator>
+          <span>or</span>
+        </Separator>
+        <ButtonContainer>
+          <OAuthButton onClick={handleGoogleLogin}>
+            <FcGoogle size={20} style={{ marginRight: '10px' }} />
+            Login with Google
+          </OAuthButton>
+        </ButtonContainer>
       </FormContainer>
     </Wrapper>
   );
@@ -68,6 +84,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: 'Nunito';
 `;
 
 const FormContainer = styled.div`
@@ -81,7 +98,7 @@ const FormContainer = styled.div`
 
 const Title = styled.h2`
   margin-bottom: 10px;
-  color: #007bff;
+  color: #a4d4da;
 `;
 
 const Subtitle = styled.p`
@@ -90,7 +107,7 @@ const Subtitle = styled.p`
 `;
 
 const StyledNavLink = styled(NavLink)`
-  color: #007bff;
+  color: #a4d4da;
   text-decoration: none;
 
   &:hover {
@@ -124,18 +141,62 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const Button = styled.button`
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #a4d4da;
   color: #fff;
   cursor: pointer;
   margin-top: 10px;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #435541;
+  }
+`;
+
+const Separator = styled.div`
+  margin: 20px 0;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  line-height: 0.1em;
+  margin: 20px 0;
+  &::before {
+    content: '';
+    display: block;
+    height: 1px;
+    background-color: #ccc;
+  }
+  span {
+    background: #fff;
+    padding: 0 10px;
+    color: #666;
+  }
+`;
+
+const OAuthButton = styled.button`
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4285f4;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #357ae8;
   }
 `;
 
